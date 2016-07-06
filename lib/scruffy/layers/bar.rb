@@ -34,10 +34,14 @@ module Scruffy::Layers
           }
         end
         
-        current_colour = color.is_a?(Array) ? color[idx % color.size] : color
+        # current_colour = color.is_a?(Array) ? color[idx % color.size] : color
+        # Cambiar colores de los graficos de barras, con los dados por el tema.
+        current_colour = @options[:custom_colors] ? options[:theme].colors[idx].to_s : color.to_s
         
         svg.rect( :x => x, :y => y, :width => @bar_width, :height => bar_height, 
           :fill => current_colour.to_s, 'style' => "opacity: #{opacity}; stroke: none;" )
+
+        @meta_coords << {x: x + (@bar_width / 2), height: y}
       end
     end
 

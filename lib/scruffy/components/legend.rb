@@ -47,7 +47,7 @@ module Scruffy::Components
     
     def draw(svg, bounds, options={})
       vertical = options[:vertical_legend]
-      legend_info = relevant_legend_info(options[:layers])
+      legend_info = options[:theme].labels ? relevant_legend_info2(options[:theme]) : relevant_legend_info(options[:layers])
       @line_height, x, y, size = 0
       if vertical
         set_line_height = 0.08 * bounds[:height]
@@ -112,6 +112,14 @@ module Scruffy::Components
         arr
       end
     end   # relevant_legend_info
+
+    def relevant_legend_info2(theme)
+      legend_info = []
+      theme.labels.each_with_index do |label, index| 
+        legend_info << {title: label, color: theme.colors[index], priority: :normal}
+      end
+      return legend_info
+    end
     
     # Returns an array consisting of the total width needed by the legend
     # information, as well as an array of @x-coords for each element. If
