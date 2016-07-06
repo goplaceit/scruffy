@@ -81,11 +81,11 @@ module Scruffy
     # Delegating these getters to the internal state object.
     def_delegators  :internal_state, :title,:x_legend,:y_legend, :theme, :default_type, 
                     :point_markers,:point_markers_rotation,:point_markers_ticks, :value_formatter, :rasterizer,
-                    :key_formatter
+                    :key_formatter, :vertical_grid
                   
     def_delegators  :internal_state, :title=, :theme=,:x_legend=,:y_legend=, :default_type=,
                     :point_markers=,:point_markers_rotation=,:point_markers_ticks=, :value_formatter=, :rasterizer=,
-                    :key_formatter=
+                    :key_formatter=, :vertical_grid=
     
     attr_reader :renderer     # Writer defined below
     
@@ -114,11 +114,11 @@ module Scruffy
       raise ArgumentError, "The arguments provided are not supported." if args.size > 0
 
       options ||= {}
-      
+      options[:vertical_grid] = options[:vertical_grid] ? options[:vertical_grid] : false
       
       self.theme = Scruffy::Themes::Standard.new
-      self.renderer = Scruffy::Renderers::Standard.new
-      self.rasterizer = Scruffy::Rasterizers::MiniMagickRasterizer.new
+      self.renderer = Scruffy::Renderers::Standard.new(options)
+      self.rasterizer = Scruffy::Rasterizers::RMagickRasterizer.new
       self.value_formatter = Scruffy::Formatters::Number.new
       self.key_formatter = Scruffy::Formatters::Number.new
 
@@ -126,7 +126,8 @@ module Scruffy
         self.send("#{arg}=".to_sym, options.delete(arg.to_sym)) unless options[arg.to_sym].nil?
       end
       
-      raise ArgumentError, "Some options provided are not supported: #{options.keys.join(' ')}." if options.size > 0
+      # Controlar el options[:vertical_grid] 
+      # raise ArgumentError, "Some options provided are not supported: #{options.keys.join(' ')}." if options.size > 0
     end
     
     # Renders the graph in it's current state to an SVG object.

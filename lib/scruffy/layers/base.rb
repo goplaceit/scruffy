@@ -72,7 +72,7 @@ module Scruffy::Layers
       options[:relativestroke] ||= false
 
       @options            = options
-
+      @meta_coords        = [] if self.class == Scruffy::Layers::Bar
     end
 
     # Builds SVG code for this graph using the provided Builder object.
@@ -168,13 +168,16 @@ module Scruffy::Layers
         dx = width.to_f / (options[:max_key] - options[:min_key] + 1)
 
         ret = []
+        count = 0
         points.each_point do |x, y|
           if y
-            x_coord = dx * (x - options[:min_key]) + dx/2
+            x_coord = @options[:bar].nil? ? dx * (x - options[:min_key]) + dx/2 : @options[:bar].as_json['meta_coords'][count][:x]
+            # x_coord = dx * (x - options[:min_key]) + dx/2
             y_coord = dy * (y - options[:min_value])
 
             ret << [x_coord, height - y_coord]
           end
+          count += 1
         end
         return ret
       end

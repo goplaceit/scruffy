@@ -10,6 +10,8 @@ module Scruffy
         markers = (options[:markers] || self.markers) || 5
         
         each_marker(markers, options[:min_value], options[:max_value], bounds[:height], options, :value_formatter) do |label, y|
+          # Revisar
+          label = label.to_i.round(-1).to_s
 
           svg.text( label, 
             :x => bounds[:width], 

@@ -8,7 +8,9 @@ module Scruffy
       def draw(svg, bounds, options={})
         markers = (options[:markers] || self.markers) || 5
         
-        stroke_width = options[:stroke_width]
+        # Revisar
+        # stroke_width = options[:stroke_width] 
+        stroke_width = 0.5
         
         colour = options[:theme].grid || options[:theme].marker
         
@@ -33,7 +35,9 @@ module Scruffy
         
         if options[:graph].point_markers #get vertical grid lines up with points if there are labels for them
           point_distance = bounds[:width] / (options[:graph].point_markers.size).to_f
-          stroke_width = options[:stroke_width]
+          # Revisar
+          # stroke_width = options[:stroke_width]
+          stroke_width = 0.5
           (0...options[:graph].point_markers.size).map do |idx| 
             x = point_distance * idx  + point_distance/2
             svg.line(:x1 => x, :y1 => 0, :x2 => x, :y2 => bounds[:height], :style => "stroke: #{colour.to_s}; stroke-width: #{stroke_width};")

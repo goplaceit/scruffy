@@ -13,7 +13,7 @@ module Scruffy::Renderers
     #
     # If a block is provided, the components array is passed to
     # the block, allowing callers to add components during initialize.
-    def define_layout
+    def define_layout(options = {})
       self.components << Scruffy::Components::Background.new(:background, :position => [0,0], :size =>[100, 100])      
 
       yield(self.components) if block_given?
