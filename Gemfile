@@ -1,6 +1,6 @@
 source :rubygems
 
-gem 'builder', '>= 2.0.0'
+gem 'builder'
 
 group :development do
   gem 'rspec'

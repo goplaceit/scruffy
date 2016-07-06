@@ -17,7 +17,7 @@ module Scruffy::Renderers
     def initialize(options = {})
       self.components = []
       self.options = options
-      define_layout
+      define_layout(options)
     end
 
     # Renders the graph and all components.
@@ -34,7 +34,8 @@ module Scruffy::Renderers
         svg.instruct!
         svg.declare! :DOCTYPE, :svg, :PUBLIC, "-//W3C//DTD SVG 1.0//EN", "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd"
       end
-      svg.svg(:xmlns => "http://www.w3.org/2000/svg", 'xmlns:xlink' => "http://www.w3.org/1999/xlink", :width => options[:size].first, :height => options[:size].last) {
+      svg.svg(:xmlns => "http://www.w3.org/2000/svg", 'xmlns:xlink' => "http://www.w3.org/1999/xlink", :viewBox => "0 0 #{options[:size].first} #{options[:size].last}") {
+      # svg.svg(:xmlns => "http://www.w3.org/2000/svg", 'xmlns:xlink' => "http://www.w3.org/1999/xlink", :width => options[:size].first, :height => options[:size].last) {
         svg.g(:id => options[:graph_id]) {
           rendertime_renderer.components.each do |component|
             component.render(svg, 
